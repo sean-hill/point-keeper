@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html ng-app="pointkeeper">
+  <head>
+    <meta charset="utf-8">
+    <title>Point Keeper</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- ionic css -->
+    <link href="css/ionic.css" rel="stylesheet">
+
+    <!-- pointkeeper css -->
+    <link href="css/app.css" rel="stylesheet">
+
+    <!-- ionic/angularjs scripts -->
+    <script src="js/ionic.js"></script>
+    <script src="js/angular/angular.js"></script>
+    <script src="js/angular/angular-animate.js"></script>
+    <script src="js/angular/angular-route.js"></script>
+    <script src="js/angular/angular-touch.js"></script>
+    <script src="js/angular/angular-sanitize.js"></script>
+    <script src="js/ionic-angular.js"></script>
+
+    <!-- cordova script -->
+    <script src="cordova.js"></script>
+
+    <!-- point keeper angular app -->
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+  </head>
+
+  <body ng-controller="AppCtrl">
+
+    <div class="bar bar-header bar-assertive">
+      <h1 class="title">Point Keeper</h1>
+      <button class="button button-clear" ng-click="newGame()">New</button>
+    </div>
+
+    <div class="scroll-content has-header">
+      <div class="list">
+
+        <div class="item item-button-right player" ng-repeat="player in players">
+          {{player.name}}
+          <span class="badge badge-assertive">{{player.score}}</span>
+          <button class="button button-light" style="right: 58px;" ng-click="changeScore(player, 'minus')">
+            <i class="icon ion-minus"></i>
+          </button>
+          <button class="button button-light" ng-click="changeScore(player, 'plus')">
+            <i class="icon ion-plus"></i>
+          </button>
+        </div>
+
+        <button class="button button-full button-light" style="margin-top: 0px" ng-click="openNewPlayerModal()">
+          Add a player
+        </button>
+
+      </div>
+    </div>
+
+    <script id="new-player.html" type="text/ng-template">
+      <div class="modal">
+        <header class="bar bar-header bar-light">
+          <h1 class="title">New Player</h1>
+          <button class="button button-clear button-assertive" ng-click="closeNewPlayerModal()">Cancel</button>
+        </header>
+        <content has-header="true">
+          <div class="padding">
+            <div class="list">
+              <label class="item item-input">
+                <span class="input-label">Name</span>
+                <input type="text" ng-model="newplayer.name">
+              </label>
+              <label class="item item-input">
+                <span class="input-label">Score</span>
+                <input type="number"  pattern="\d*" ng-model="newplayer.score">
+              </label>
+              <button class="button button-full button-assertive" ng-click="addNewPlayer()">Add</button>
+            </div>
+          </div>
+        </content>
+      </div>
+    </script>
+
+    <script id="modify-score.html" type="text/ng-template">
+      <div class="modal">
+        <header class="bar bar-header bar-light">
+          <h1 class="title">{{modifyScoreTitle}}</h1>
+          <button class="button button-clear button-assertive" ng-click="closeModifyScoreModal()">Cancel</button>
+        </header>
+        <content has-header="true">
+          <div class="padding">
+            <div class="list">
+              <label class="item item-input">
+                <span class="input-label">Amount</span>
+                <input type="number" ng-model="modify.score" pattern="\d*">
+              </label>
+              <button class="button button-full button-assertive" ng-click="modifyScore()">Modify Score</button>
+            </div>
+          </div>
+        </content>
+      </div>
+    </script>
+
+    <script>
+      document.addEventListener('deviceready', function() {
+        ionic.Platform.detect();
+      });
+    </script>
+    
+  </body>
+</html>
