@@ -1,6 +1,4 @@
-ionic-angular-cordova-seed
-==========================
+point-keeper
+============
 
-The perfect starting point for an Ionic project.
-
-- [Ionic Tutorials](http://ionicframework.com/tutorials/)
+Keep score of your game and have fun!
