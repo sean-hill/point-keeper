@@ -35,8 +35,33 @@ angular.module('pointkeeper.controllers', [])
   }
 
   $scope.newGame = function() {
-    $scope.subHeaderText = Game.startText;
-    $scope.players = Game.defaultPlayers();
+
+    var resetGame = function() {
+      $scope.subHeaderText = Game.startText;
+      $scope.players = Game.defaultPlayers();
+    }
+
+    if (navigator.notification) {
+
+      navigator.notification.confirm(
+        'This will erase your current game and start another.', 
+        function(buttonIndex) {
+          if (buttonIndex == 2) {
+            resetGame();
+            $scope.$apply();
+          }
+        },            
+        'New Game',           
+        ['Cancel','Ok']        
+      );
+
+    } else {
+
+      if (window.confirm("This will erase your current game and start another.")) {
+        resetGame();
+      }
+
+    }
   }
 
   Modal.fromTemplateUrl('modify-score.html', function(modal) {
@@ -63,9 +88,11 @@ angular.module('pointkeeper.controllers', [])
     $scope.operator = operator;
 
     if (operator == "minus") {
-      $scope.modifyScoreTitle = "Subtract points";
+      $scope.modifyText = "Subtract";
+      $scope.modifyScoreTitle = $scope.modifyText + " points";
     } else if (operator == "plus") {
-      $scope.modifyScoreTitle = "Add points";
+      $scope.modifyText = "Add";
+      $scope.modifyScoreTitle =  $scope.modifyText + " points";
     }
 
     $scope.openModifyScoreModal();

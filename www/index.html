@@ -102,7 +102,7 @@
               <span class="input-label">Amount</span>
               <input type="number" ng-model="modify.score" pattern="\d*">
             </label>
-            <button class="button button-full button-assertive" ng-click="modifyScore()" ng-class="{disabled: !modify.score}">Modify Score</button>
+            <button class="button button-full button-assertive" ng-click="modifyScore()" ng-class="{disabled: !modify.score}">{{modifyText}}</button>
           </div>
         </content>
       </div>
