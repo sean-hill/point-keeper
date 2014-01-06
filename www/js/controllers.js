@@ -1,11 +1,13 @@
 angular.module('pointkeeper.controllers', [])
 
-.controller('AppCtrl', function($scope, Modal, Players) {
+.controller('AppCtrl', function($scope, Modal, Game) {
  
-  $scope.players = Players.defaults();
-  $scope.newplayer = Players.new();
+  $scope.players = Game.defaultPlayers();
+  $scope.newplayer = Game.newPlayer();
+  $scope.subHeaderText = Game.startText;
 
   Modal.fromTemplateUrl('new-player.html', function(modal) {
+    modal.focusScore = Game.focusInput;
     $scope.newPlayerModal = modal;
   }, {
     scope: $scope,
@@ -14,6 +16,7 @@ angular.module('pointkeeper.controllers', [])
 
   $scope.openNewPlayerModal = function() {
     $scope.newPlayerModal.show();
+    $scope.newPlayerModal.focusScore();
   };
 
   $scope.closeNewPlayerModal = function() {
@@ -24,21 +27,20 @@ angular.module('pointkeeper.controllers', [])
 
     if ($scope.newplayer.name) {
       $scope.players.push($scope.newplayer);
-      $scope.newplayer = Players.new();
+      $scope.newplayer = Game.newPlayer();
       $scope.closeNewPlayerModal();
+      $scope.subHeaderText = "Game Players";
     }
 
   }
 
   $scope.newGame = function() {
-    $scope.players = Players.defaults();
+    $scope.subHeaderText = Game.startText;
+    $scope.players = Game.defaultPlayers();
   }
 
   Modal.fromTemplateUrl('modify-score.html', function(modal) {
-    modal.focusScore = function() {
-      var input = this.el.querySelector('input, textarea');
-      input && input.focus && input.focus();
-    }
+    modal.focusScore = Game.focusInput;
     $scope.modifyScoreModal = modal;
   }, {
     scope: $scope,
@@ -61,9 +63,9 @@ angular.module('pointkeeper.controllers', [])
     $scope.operator = operator;
 
     if (operator == "minus") {
-      $scope.modifyScoreTitle = "Subtract score";
+      $scope.modifyScoreTitle = "Subtract points";
     } else if (operator == "plus") {
-      $scope.modifyScoreTitle = "Add score";
+      $scope.modifyScoreTitle = "Add points";
     }
 
     $scope.openModifyScoreModal();

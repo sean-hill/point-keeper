@@ -6547,4 +6547,18 @@ a.button {
   line-height: 48px; }
 
 .player {
-  padding-right: 115px; }
+  padding-right: 105px; }
+
+.list .button.item-button-pad {
+  padding-top: 3px; }
+
+.disabled {
+  opacity: .8; }
+
+.game-teaser {
+  margin-top: 25px;
+  text-align: center; }
+  .game-teaser h5 {
+    margin: 0px; }
+  .game-teaser .icon {
+    font-size: 80px; }

@@ -37,20 +37,31 @@
     </div>
 
     <div class="scroll-content has-header">
+
+      <div class="game-teaser" ng-show="!players.length">
+        <h5> Add players to get started!</h5>
+        <i class="icon ion-ios7-people"></i>
+      </div>
+
       <div class="list">
+
+        <div class="item item-divider" ng-show="players.length">
+          Game Players
+        </div>
 
         <div class="item item-button-right player" ng-repeat="player in players">
           {{player.name}}
-          <span class="badge badge-assertive">{{player.score}}</span>
-          <button class="button button-light" style="right: 58px;" ng-click="changeScore(player, 'minus')">
+          <span class="badge badge-stable">{{player.score}}</span>
+          <button class="button button-assertive button-clear item-button-pad" style="right: 58px;" ng-click="changeScore(player, 'minus')">
             <i class="icon ion-minus"></i>
           </button>
-          <button class="button button-light" ng-click="changeScore(player, 'plus')">
+          <button class="button button-assertive button-clear item-button-pad" ng-click="changeScore(player, 'plus')">
             <i class="icon ion-plus"></i>
           </button>
         </div>
 
-        <button class="button button-full button-light" style="margin-top: 0px" ng-click="openNewPlayerModal()">
+        <button class="button button-full" ng-click="openNewPlayerModal()" ng-class="{'button-clear': players.length, 'button-light': !players.length}">
+          <i class="icon ion-ios7-plus-empty" ng-show="players.length"></i>
           Add a player
         </button>
 
@@ -59,23 +70,21 @@
 
     <script id="new-player.html" type="text/ng-template">
       <div class="modal">
-        <header class="bar bar-header bar-light">
+        <header class="bar bar-header bar-stable">
           <h1 class="title">New Player</h1>
           <button class="button button-clear button-assertive" ng-click="closeNewPlayerModal()">Cancel</button>
         </header>
         <content has-header="true">
-          <div class="padding">
-            <div class="list">
-              <label class="item item-input">
-                <span class="input-label">Name</span>
-                <input type="text" ng-model="newplayer.name">
-              </label>
-              <label class="item item-input">
-                <span class="input-label">Score</span>
-                <input type="number"  pattern="\d*" ng-model="newplayer.score">
-              </label>
-              <button class="button button-full button-assertive" ng-click="addNewPlayer()">Add</button>
-            </div>
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Name</span>
+              <input type="text" ng-model="newplayer.name">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Score</span>
+              <input type="number"  pattern="\d*" ng-model="newplayer.score">
+            </label>
+            <button class="button button-full button-assertive" ng-click="addNewPlayer()" ng-class="{disabled: !newplayer.name}">Add</button>
           </div>
         </content>
       </div>
@@ -83,19 +92,17 @@
 
     <script id="modify-score.html" type="text/ng-template">
       <div class="modal">
-        <header class="bar bar-header bar-light">
+        <header class="bar bar-header bar-stable">
           <h1 class="title">{{modifyScoreTitle}}</h1>
           <button class="button button-clear button-assertive" ng-click="closeModifyScoreModal()">Cancel</button>
         </header>
         <content has-header="true">
-          <div class="padding">
-            <div class="list">
-              <label class="item item-input">
-                <span class="input-label">Amount</span>
-                <input type="number" ng-model="modify.score" pattern="\d*">
-              </label>
-              <button class="button button-full button-assertive" ng-click="modifyScore()">Modify Score</button>
-            </div>
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Amount</span>
+              <input type="number" ng-model="modify.score" pattern="\d*">
+            </label>
+            <button class="button button-full button-assertive" ng-click="modifyScore()" ng-class="{disabled: !modify.score}">Modify Score</button>
           </div>
         </content>
       </div>

@@ -1,5 +1,26 @@
 @import "ionic";
 
 .player {
-	padding-right: 115px;
+	padding-right: 105px;
+}
+
+.list .button.item-button-pad {
+	padding-top: 3px;
+}
+
+.disabled {
+	opacity: .8;
+}
+
+.game-teaser {
+	margin-top: 25px;
+	text-align: center;
+
+	h5 {
+		margin: 0px;
+	}
+
+	.icon {
+		font-size: 80px;
+	}
 }

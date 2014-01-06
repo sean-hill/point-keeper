@@ -1,8 +1,8 @@
 angular.module('pointkeeper.services', [])
 
-.service("Players", function (){
+.service("Game", function (){
 
-  this.defaults = function() {
+  this.defaultPlayers = function() {
 
     var players = [];
     // players.push({
@@ -18,11 +18,18 @@ angular.module('pointkeeper.services', [])
     
   };
 
-  this.new = function() {
+  this.newPlayer = function() {
     var player = {};
     player.name = "";
     player.score = 0;
     return player;
   };
+
+  this.startText = "No players";
+
+  this.focusInput = function() {
+    var input = this.el.querySelector('input, textarea');
+    input && input.focus && input.focus();
+  }
 
 });
