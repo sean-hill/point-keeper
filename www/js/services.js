@@ -27,9 +27,4 @@ angular.module('pointkeeper.services', [])
 
   this.startText = "No players";
 
-  this.focusInput = function() {
-    var input = this.el.querySelector('input, textarea');
-    input && input.focus && input.focus();
-  }
-
 });

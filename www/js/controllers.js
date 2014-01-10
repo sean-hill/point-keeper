@@ -6,39 +6,24 @@ angular.module('pointkeeper.controllers', [])
   $scope.newplayer = Game.newPlayer();
   $scope.subHeaderText = Game.startText;
 
-  Modal.fromTemplateUrl('new-player.html', function(modal) {
-    modal.focusScore = Game.focusInput;
-    $scope.newPlayerModal = modal;
-  }, {
-    scope: $scope,
-    animation: 'slide-in-up'
-  });
+  $scope.addNewPlayerBlock = function() {
+    $scope.players.push({
+      name: undefined
+      , score: 0
+      , configured: false
+    });
+  }
 
-  $scope.openNewPlayerModal = function() {
-    $scope.newPlayerModal.show();
-    $scope.newPlayerModal.focusScore();
-  };
-
-  $scope.closeNewPlayerModal = function() {
-    $scope.newPlayerModal.hide();
-  };
-
-  $scope.addNewPlayer = function() {
-
-    if ($scope.newplayer.name) {
-      $scope.players.push($scope.newplayer);
-      $scope.newplayer = Game.newPlayer();
-      $scope.closeNewPlayerModal();
-      $scope.subHeaderText = "Game Players";
-    }
-
+  $scope.configurePlayer = function(player) {
+    if (player.name) player.configured = true;
   }
 
   $scope.newGame = function() {
 
-    var resetGame = function() {
+    var makeNewGame = function() {
       $scope.subHeaderText = Game.startText;
       $scope.players = Game.defaultPlayers();
+      if (!$scope.$$phase) $scope.$apply();
     }
 
     if (navigator.notification) {
@@ -47,8 +32,7 @@ angular.module('pointkeeper.controllers', [])
         'This will erase your current game and start another.', 
         function(buttonIndex) {
           if (buttonIndex == 2) {
-            resetGame();
-            $scope.$apply();
+            makeNewGame();
           }
         },            
         'New Game',           
@@ -58,6 +42,37 @@ angular.module('pointkeeper.controllers', [])
     } else {
 
       if (window.confirm("This will erase your current game and start another.")) {
+        makeNewGame();
+      }
+
+    }
+  }
+
+  $scope.resetGame = function() {
+
+    var resetGame = function() {
+      angular.forEach($scope.players, function(player){
+        player.score = 0;
+      });
+      if (!$scope.$$phase) $scope.$apply();
+    }
+
+    if (navigator.notification) {
+
+      navigator.notification.confirm(
+        'Set all current scores to zero?', 
+        function(buttonIndex) {
+          if (buttonIndex == 2) {
+            resetGame();
+          }
+        },            
+        'New Game',           
+        ['No','Yes']        
+      );
+
+    } else {
+
+      if (window.confirm('Set all current scores to zero?')) {
         resetGame();
       }
 
@@ -65,7 +80,6 @@ angular.module('pointkeeper.controllers', [])
   }
 
   Modal.fromTemplateUrl('modify-score.html', function(modal) {
-    modal.focusScore = Game.focusInput;
     $scope.modifyScoreModal = modal;
   }, {
     scope: $scope,
@@ -74,7 +88,6 @@ angular.module('pointkeeper.controllers', [])
 
   $scope.openModifyScoreModal = function() {
     $scope.modifyScoreModal.show();
-    $scope.modifyScoreModal.focusScore();
   };
 
   $scope.closeModifyScoreModal = function() {
