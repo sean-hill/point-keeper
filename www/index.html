@@ -53,7 +53,7 @@
         <div class="item item-button-right player" ng-repeat="player in players">
 
             <!-- Shown when player is not configured -->
-            <input ng-show="!player.configured" type="text" ng-model="player.name" placeholder="Player's name" class="player-input" />
+            <input ng-show="!player.configured" type="text" ng-model="player.name" placeholder="Enter Player's name" class="player-input" />
             <button ng-show="!player.configured" class="button button-balanced button-clear play" ng-click="configurePlayer(player)">
               Play
             </button>
@@ -86,12 +86,14 @@
           <button class="button button-clear button-assertive" ng-click="closeModifyScoreModal()">Cancel</button>
         </header>
         <content has-header="true">
-          <div class="list">
+          <div class="list" style="margin-bottom: 3px">
             <label class="item item-input">
               <span class="input-label">Amount</span>
               <input type="number" ng-model="modify.score" pattern="\d*" placeholder="How much?">
             </label>
-            <button class="button button-full button-assertive" ng-click="modifyScore()" ng-class="{disabled: !modify.score}">{{modifyText}}</button>
+          </div>
+          <div class="padding">
+            <button class="button button-block button-assertive" ng-click="modifyScore()" ng-class="{disabled: !modify.score}">{{modifyText}}</button>
           </div>
         </content>
       </div>
@@ -100,6 +102,7 @@
     <script>
       document.addEventListener('deviceready', function() {
         ionic.Platform.detect();
+        window.plugins.webviewcolor.change('#FFFFFF')
       });
     </script>
     
