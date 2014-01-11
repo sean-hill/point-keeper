@@ -1,6 +1,6 @@
 angular.module('pointkeeper.controllers', [])
 
-.controller('AppCtrl', function($scope, Modal, Game) {
+.controller('AppCtrl', function($scope, Modal, Game, ActionSheet) {
  
   $scope.players = Game.defaultPlayers();
   $scope.newplayer = Game.newPlayer();
@@ -15,7 +15,12 @@ angular.module('pointkeeper.controllers', [])
   }
 
   $scope.configurePlayer = function(player) {
-    if (player.name) player.configured = true;
+    if (player.name) {
+      player.configured = true;
+      angular.forEach(document.getElementsByClassName("player-input"), function(input){
+        input.blur();
+      });
+    }
   }
 
   $scope.newGame = function() {
@@ -66,7 +71,7 @@ angular.module('pointkeeper.controllers', [])
             resetGame();
           }
         },            
-        'New Game',           
+        'Reset Game',           
         ['No','Yes']        
       );
 
@@ -121,6 +126,35 @@ angular.module('pointkeeper.controllers', [])
       else if ($scope.operator == "plus") $scope.playerToModifyScore.score += parseInt($scope.modify.score);
 
     }
+
+  }
+
+  $scope.clickedPlayer = function(player) {
+
+    // Show the action sheet
+    ActionSheet.show({
+
+      // The text of the red destructive button
+      destructiveText: 'Remove',
+
+      // The title text at the top
+      titleText: 'Remove ' + player.name + ' from the game?',
+
+      // The text of the cancel button
+      cancelText: 'Cancel',
+
+      // Called when the sheet is cancelled, either from triggering the
+      // cancel button, or tapping the backdrop, or using escape on the keyboard
+      cancel: function() {
+      },
+
+      // Called when the destructive button is clicked. Return true to close the
+      // action sheet. False to keep it open
+      destructiveButtonClicked: function() {
+        $scope.players.splice($scope.players.indexOf(player), 1);     
+        return true;
+      }
+    });
 
   }
 

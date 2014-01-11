@@ -34,7 +34,7 @@
     <div class="bar bar-header bar-assertive">
       <button class="button button-clear" ng-click="resetGame()" ng-show="players.length">Reset</button>
       <h1 class="title">Point Keeper</h1>
-      <button class="button button-clear" ng-click="newGame()">New</button>
+      <button class="button button-clear" ng-click="newGame()" ng-show="players.length">New</button>
     </div>
 
     <div class="scroll-content has-header">
@@ -53,13 +53,13 @@
         <div class="item item-button-right player" ng-repeat="player in players">
 
             <!-- Shown when player is not configured -->
-            <input ng-show="!player.configured" type="text" ng-model="player.name" placeholder="Player's name" />
+            <input ng-show="!player.configured" type="text" ng-model="player.name" placeholder="Player's name" class="player-input" />
             <button ng-show="!player.configured" class="button button-balanced button-clear play" ng-click="configurePlayer(player)">
               Play
             </button>
 
             <!-- Shown when not a new player -->
-            <span ng-hide="!player.configured">{{player.name}}</span>
+            <span ng-hide="!player.configured" ng-click="clickedPlayer(player)">{{player.name}}</span>
             <span ng-hide="!player.configured" class="badge badge-stable">{{player.score}}</span>
 
             <button ng-hide="!player.configured" class="button button-assertive button-clear item-button-pad" style="right: 58px;" ng-click="changeScore(player, 'minus')">
@@ -89,7 +89,7 @@
           <div class="list">
             <label class="item item-input">
               <span class="input-label">Amount</span>
-              <input type="number" ng-model="modify.score" pattern="\d*">
+              <input type="number" ng-model="modify.score" pattern="\d*" placeholder="How much?">
             </label>
             <button class="button button-full button-assertive" ng-click="modifyScore()" ng-class="{disabled: !modify.score}">{{modifyText}}</button>
           </div>
