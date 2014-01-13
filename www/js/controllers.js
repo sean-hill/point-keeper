@@ -2,6 +2,8 @@ angular.module('pointkeeper.controllers', [])
 
 .controller('AppCtrl', function($scope, Modal, Game, ActionSheet) {
  
+  mixpanel.track("Loaded App");
+
   $scope.players = Game.defaultPlayers();
   $scope.newplayer = Game.newPlayer();
   $scope.subHeaderText = Game.startText;
@@ -12,6 +14,7 @@ angular.module('pointkeeper.controllers', [])
       , score: 0
       , configured: false
     });
+    mixpanel.track("Added New Player");
   }
 
   $scope.configurePlayer = function(player) {
@@ -21,14 +24,18 @@ angular.module('pointkeeper.controllers', [])
         input.blur();
       });
     }
+    mixpanel.track("Configured Player");
   }
 
   $scope.newGame = function() {
+
+    mixpanel.track("Clicked New Game");
 
     var makeNewGame = function() {
       $scope.subHeaderText = Game.startText;
       $scope.players = Game.defaultPlayers();
       if (!$scope.$$phase) $scope.$apply();
+      mixpanel.track("Started New Game");
     }
 
     if (navigator.notification) {
@@ -55,11 +62,14 @@ angular.module('pointkeeper.controllers', [])
 
   $scope.resetGame = function() {
 
+    mixpanel.track("Clicked Reset Game");
+
     var resetGame = function() {
       angular.forEach($scope.players, function(player){
         player.score = 0;
       });
       if (!$scope.$$phase) $scope.$apply();
+      mixpanel.track("Reset Game");
     }
 
     if (navigator.notification) {
@@ -92,10 +102,12 @@ angular.module('pointkeeper.controllers', [])
   });
 
   $scope.openModifyScoreModal = function() {
+    mixpanel.track("Opened " + $scope.modifyText + " Score");
     $scope.modifyScoreModal.show();
   };
 
   $scope.closeModifyScoreModal = function() {
+    mixpanel.track("Closed Modify Score");
     $scope.modifyScoreModal.hide();
   };
 
@@ -114,11 +126,14 @@ angular.module('pointkeeper.controllers', [])
     }
 
     $scope.openModifyScoreModal();
+
   }
 
   $scope.modifyScore = function() {
 
     if ($scope.modify.score) {
+
+      mixpanel.track("Modified Score");
 
       $scope.closeModifyScoreModal();
 
@@ -130,6 +145,8 @@ angular.module('pointkeeper.controllers', [])
   }
 
   $scope.clickedPlayer = function(player) {
+
+    mixpanel.track("Clicked Remove Player");
 
     // Show the action sheet
     ActionSheet.show({
@@ -146,11 +163,13 @@ angular.module('pointkeeper.controllers', [])
       // Called when the sheet is cancelled, either from triggering the
       // cancel button, or tapping the backdrop, or using escape on the keyboard
       cancel: function() {
+        mixpanel.track("Cancelled Remove Player");
       },
 
       // Called when the destructive button is clicked. Return true to close the
       // action sheet. False to keep it open
       destructiveButtonClicked: function() {
+        mixpanel.track("Removed Player");
         $scope.players.splice($scope.players.indexOf(player), 1);     
         return true;
       }
